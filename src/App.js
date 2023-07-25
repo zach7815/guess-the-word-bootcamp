@@ -9,6 +9,7 @@ const App = () => {
 
 	const generateWordDisplay = () => {
 		const wordDisplay = [];
+		console.log(currWord);
 		// for...of is a string and array iterator that does not use index
 		for (let letter of currWord) {
 			if (guessedLetters.includes(letter)) {
