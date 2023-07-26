@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-export const Form = ({
-	guesses,
-	setguesses,
-	guessesRemaining,
-	manageGuesses,
-}) => {
+export const Form = ({ guesses, manageGuesses, handleGuess }) => {
 	const [input, setInput] = useState('');
 	const [valid, setValid] = useState(false);
 	const handleChange = (e) => {
@@ -23,8 +18,8 @@ export const Form = ({
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		manageGuesses();
-		setguesses([...guesses, input]);
 		setInput('');
+		handleGuess(input);
 	};
 
 	return (
