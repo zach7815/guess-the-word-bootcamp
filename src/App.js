@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getRandomWord } from './utils';
 import './App.css';
 import { Form } from './Form';
@@ -6,6 +6,7 @@ import { Form } from './Form';
 const App = () => {
 	const [currWord, setCurrWord] = useState(getRandomWord());
 	const [guessedLetters, setGuessedLetters] = useState([]);
+	const [guessesRemaining, setGuessesRemaining] = useState(10);
 
 	const generateWordDisplay = () => {
 		const wordDisplay = [];
@@ -21,6 +22,15 @@ const App = () => {
 		return wordDisplay.toString();
 	};
 
+	const manageGuesses = () => {
+		setGuessesRemaining((prevGuesses) => prevGuesses - 1);
+		console.log(guessesRemaining);
+	};
+
+	useEffect(() => {
+		console.log(guessesRemaining);
+	}, [guessesRemaining]);
+
 	return (
 		<div className='App'>
 			<header className='App-header'>
@@ -30,7 +40,13 @@ const App = () => {
 				<h3>Guessed Letters</h3>
 				{guessedLetters.length > 0 ? guessedLetters.toString() : '-'}
 				<h3>Input</h3>
-				<Form guesses={guessedLetters} setGuesses={setGuessedLetters} />
+				<Form
+					guesses={guessedLetters}
+					setguesses={setGuessedLetters}
+					guessesRemaining={guessesRemaining}
+					manageGuesses={manageGuesses}
+				/>
+				<div>{guessesRemaining}</div>
 			</header>
 		</div>
 	);
