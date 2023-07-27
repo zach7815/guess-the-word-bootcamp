@@ -34,9 +34,19 @@ const App = () => {
 			}
 		}
 		if (correctGuess) {
-			new Audio(correctAnswer).play();
+			const audio = new Audio(correctAnswer);
+			audio.play();
+			audio.addEventListener('ended', () => {
+				audio.pause();
+				audio.currentTime = 0;
+			});
 		} else {
-			new Audio(wrongAnswer).play();
+			const audio = new Audio(wrongAnswer);
+			audio.play();
+			audio.addEventListener('ended', () => {
+				audio.pause();
+				audio.currentTime = 0;
+			});
 		}
 		setDisplayedWord(newDisplayedWord);
 	};
