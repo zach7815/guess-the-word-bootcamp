@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getRandomWord } from './utils';
 import correctAnswer from './sounds/correctAnswer.mp3';
 import wrongAnswer from './sounds/wrongAnswer.mp3';
+import winGame from './sounds/winGame.mp3';
 
 import './App.css';
 import { Form } from './Form';
@@ -11,6 +12,8 @@ const App = () => {
 	const [currWord, setCurrWord] = useState(getRandomWord());
 	const [guessedLetters, setGuessedLetters] = useState([]);
 	const [guessesRemaining, setGuessesRemaining] = useState(10);
+	const [hasGuessed, setHasGuessed] = useState(false);
+	const [reset, setReset] = useState(false);
 
 	const generateWordDisplay = () => {
 		// create and display blank spaces for word
@@ -55,18 +58,37 @@ const App = () => {
 		generateWordDisplay();
 	}, []);
 
-	// function that controls the revealing of the letters
+	useEffect(() => {
+		const handleWin = () => {
+			const letterRegex = /^[a-z]+$/i;
+			const displayedWordString = displayedWord.join('');
+			const completedGuess = letterRegex.test(displayedWordString);
+			console.log(completedGuess);
+			console.log(displayedWord);
+			if (completedGuess) {
+				setTimeout(() => {
+					const audio = new Audio(winGame);
+					audio.play();
+					audio.addEventListener('ended', () => {
+						audio.pause();
+						audio.currentTime = 0;
+					});
+				}, 2000);
+			}
+		};
 
-	// function that controls what happens if the answer is right or wrong
+		if (!hasGuessed) {
+			return;
+		} else {
+			handleWin();
+		}
+		handleWin();
+	}, [displayedWord, hasGuessed]);
 
 	const manageGuesses = () => {
+		setHasGuessed(true);
 		setGuessesRemaining((prevGuesses) => prevGuesses - 1);
-		console.log(guessesRemaining);
 	};
-
-	useEffect(() => {
-		console.log(guessesRemaining);
-	}, [guessesRemaining]);
 
 	return (
 		<div className='App'>
