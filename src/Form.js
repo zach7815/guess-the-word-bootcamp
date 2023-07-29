@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
 
-export const Form = ({ guesses, manageGuesses, handleGuess }) => {
+export const Form = ({ guesses, handleGuess }) => {
 	const [input, setInput] = useState('');
-	const [valid, setValid] = useState(false);
+	const [isValid, setIsValid] = useState(false);
+	const [isBlank, setIsBlank] = useState(false);
 	const handleChange = (e) => {
 		const userInput = e.target.value;
 		const letterRegex = /^[a-zA-Z]+$/;
 
 		if (userInput === '' || letterRegex.test(userInput)) {
 			setInput(userInput);
-			setValid(false);
+			setIsValid(false);
+			setIsBlank(false);
 		} else {
-			setValid(true);
+			setIsValid(true);
 		}
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		manageGuesses();
-		setInput('');
+		if (input.trim() === '') {
+			setIsBlank(true);
+			return;
+		}
 		handleGuess(input);
+		setInput('');
 	};
 
 	return (
@@ -34,11 +39,16 @@ export const Form = ({ guesses, manageGuesses, handleGuess }) => {
 						onChange={handleChange}
 						maxLength={1}
 					></input>
-					{valid && (
-						<div className='warning'> Numbers are an invalid guess</div>
-					)}
 				</label>
 				<button> submit </button>
+
+				{isValid && (
+					<div className='warning'>
+						{' '}
+						Numbers and special chars are invalid guess
+					</div>
+				)}
+				{isBlank && <p>Submissions cannot be blank</p>}
 			</form>
 		</>
 	);

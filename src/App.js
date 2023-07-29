@@ -3,9 +3,10 @@ import { getRandomWord } from './utils';
 import correctAnswer from './sounds/correctAnswer.mp3';
 import wrongAnswer from './sounds/wrongAnswer.mp3';
 import winGame from './sounds/winGame.mp3';
-
 import './App.css';
 import { Form } from './Form';
+import { GameOver } from './GameOver';
+import { ConfettiComp } from './confetti';
 
 const App = () => {
 	const [displayedWord, setDisplayedWord] = useState([]);
@@ -13,7 +14,8 @@ const App = () => {
 	const [guessedLetters, setGuessedLetters] = useState([]);
 	const [guessesRemaining, setGuessesRemaining] = useState(10);
 	const [hasGuessed, setHasGuessed] = useState(false);
-	const [reset, setReset] = useState(false);
+	const [isGameOver, setIsGameOver] = useState(false);
+	const [hasWon, setHasWon] = useState(false);
 
 	const generateWordDisplay = () => {
 		// create and display blank spaces for word
@@ -27,6 +29,7 @@ const App = () => {
 	};
 
 	const handleGuess = (userGuess) => {
+		console.log(currWord);
 		setGuessedLetters([...guessedLetters, userGuess]); // add the guessed letter to the list of guessed letters
 		let correctGuess = false;
 		const newDisplayedWord = [...displayedWord]; // make a copy of the displayed word array
@@ -50,6 +53,7 @@ const App = () => {
 				audio.pause();
 				audio.currentTime = 0;
 			});
+			manageGuesses();
 		}
 		setDisplayedWord(newDisplayedWord);
 	};
@@ -59,12 +63,20 @@ const App = () => {
 	}, []);
 
 	useEffect(() => {
+		const handleLoss = () => {
+			if (guessesRemaining === 0) {
+				setIsGameOver(true);
+			}
+		};
+
+		handleLoss();
+	}, [guessesRemaining, isGameOver]);
+
+	useEffect(() => {
 		const handleWin = () => {
 			const letterRegex = /^[a-z]+$/i;
 			const displayedWordString = displayedWord.join('');
 			const completedGuess = letterRegex.test(displayedWordString);
-			console.log(completedGuess);
-			console.log(displayedWord);
 			if (completedGuess) {
 				setTimeout(() => {
 					const audio = new Audio(winGame);
@@ -73,6 +85,7 @@ const App = () => {
 						audio.pause();
 						audio.currentTime = 0;
 					});
+					setHasWon(true);
 				}, 2000);
 			}
 		};
@@ -99,14 +112,17 @@ const App = () => {
 				<h3>Guessed Letters</h3>
 				{guessedLetters.length > 0 ? guessedLetters.toString() : '-'}
 
+				<div>{guessesRemaining}</div>
+
 				<Form
 					guesses={guessedLetters}
 					setguesses={setGuessedLetters}
 					manageGuesses={manageGuesses}
 					handleGuess={handleGuess}
 				/>
-				<div>{guessesRemaining}</div>
 			</header>
+			{isGameOver && <GameOver />}
+			{hasWon && <ConfettiComp />}
 		</div>
 	);
 };

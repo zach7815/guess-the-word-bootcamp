@@ -20,3 +20,26 @@
 .warning {
 	color: red;
 }
+.game-over {
+	position: absolute;
+	z-index: 900;
+	height: 100vh;
+	width: 100vw;
+	top: 0;
+	background-color: #1c1c1c;
+	opacity: 90%;
+}
+
+.inner-content {
+	display: flex;
+	flex-direction: column;
+	color: azure;
+	position: relative;
+	z-index: 1001;
+	height: inherit;
+	justify-content: center;
+	align-items: center;
+}
+.inner-content button {
+	width: fit-content;
+}
