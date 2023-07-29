@@ -7,6 +7,7 @@ import './App.css';
 import { Form } from './Form';
 import { GameOver } from './GameOver';
 import { ConfettiComp } from './confetti';
+import { GameWin } from './GameWin';
 
 const App = () => {
 	const [displayedWord, setDisplayedWord] = useState([]);
@@ -16,12 +17,13 @@ const App = () => {
 	const [hasGuessed, setHasGuessed] = useState(false);
 	const [isGameOver, setIsGameOver] = useState(false);
 	const [hasWon, setHasWon] = useState(false);
+	const [isGameWinActive, setIsGameWinActive] = useState(false);
+	const [rounds, setRounds] = useState(0);
 
 	const generateWordDisplay = () => {
 		// create and display blank spaces for word
-		console.log(currWord);
 		const wordDisplay = [];
-		for (let letter of currWord) {
+		for (let i = 0; i < currWord.length; i++) {
 			wordDisplay.push('_');
 		}
 
@@ -39,6 +41,7 @@ const App = () => {
 				correctGuess = true;
 			}
 		}
+
 		if (correctGuess) {
 			const audio = new Audio(correctAnswer);
 			audio.play();
@@ -56,6 +59,14 @@ const App = () => {
 			manageGuesses();
 		}
 		setDisplayedWord(newDisplayedWord);
+	};
+
+	const resetGame = () => {
+		setGuessesRemaining(10);
+		setIsGameOver(false);
+		setGuessedLetters([]);
+		setCurrWord(getRandomWord());
+		generateWordDisplay();
 	};
 
 	useEffect(() => {
@@ -77,6 +88,7 @@ const App = () => {
 			const letterRegex = /^[a-z]+$/i;
 			const displayedWordString = displayedWord.join('');
 			const completedGuess = letterRegex.test(displayedWordString);
+
 			if (completedGuess) {
 				setTimeout(() => {
 					const audio = new Audio(winGame);
@@ -86,15 +98,13 @@ const App = () => {
 						audio.currentTime = 0;
 					});
 					setHasWon(true);
+					setTimeout(() => {
+						setIsGameWinActive(true);
+					}, 5000);
 				}, 2000);
 			}
 		};
 
-		if (!hasGuessed) {
-			return;
-		} else {
-			handleWin();
-		}
 		handleWin();
 	}, [displayedWord, hasGuessed]);
 
@@ -119,10 +129,21 @@ const App = () => {
 					setguesses={setGuessedLetters}
 					manageGuesses={manageGuesses}
 					handleGuess={handleGuess}
+					guessedLetters={guessedLetters}
 				/>
 			</header>
-			{isGameOver && <GameOver />}
+			{isGameOver && <GameOver currWord={currWord} resetGame={resetGame} />}
 			{hasWon && <ConfettiComp />}
+			{isGameWinActive && (
+				<GameWin
+					guessesRemaining={guessesRemaining}
+					resetGame={resetGame}
+					rounds={rounds}
+					setRounds={setRounds}
+					setHasWon={setHasWon}
+					setIsGameWinActive={setIsGameWinActive}
+				/>
+			)}
 		</div>
 	);
 };
