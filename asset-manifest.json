@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/guess-the-word-bootcamp/static/css/main.3e6c76e9.css",
+    "main.js": "/guess-the-word-bootcamp/static/js/main.11c4211a.js",
+    "static/media/wrongAnswer.mp3": "/guess-the-word-bootcamp/static/media/wrongAnswer.20790bab9d5b65e69abe.mp3",
+    "static/media/winGame.mp3": "/guess-the-word-bootcamp/static/media/winGame.37b45d4b4b0828435ef4.mp3",
+    "static/media/correctAnswer.mp3": "/guess-the-word-bootcamp/static/media/correctAnswer.fd2c2fea27379cbc44da.mp3",
+    "static/media/loseGame.mp3": "/guess-the-word-bootcamp/static/media/loseGame.6b2eb1aa1ffcec110107.mp3",
+    "index.html": "/guess-the-word-bootcamp/index.html",
+    "main.3e6c76e9.css.map": "/guess-the-word-bootcamp/static/css/main.3e6c76e9.css.map",
+    "main.11c4211a.js.map": "/guess-the-word-bootcamp/static/js/main.11c4211a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3e6c76e9.css",
+    "static/js/main.11c4211a.js"
+  ]
+}
