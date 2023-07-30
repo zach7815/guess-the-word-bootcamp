@@ -30,6 +30,17 @@
 	opacity: 90%;
 }
 
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+form input {
+	font-size: 18pt;
+	height: 42px;
+	width: 300px;
+}
 .inner-content {
 	display: flex;
 	flex-direction: column;

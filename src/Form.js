@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Button from '@mui/material/Button';
 
 export const Form = ({ guesses, handleGuess, guessedLetters }) => {
 	const [input, setInput] = useState('');
@@ -40,17 +41,15 @@ export const Form = ({ guesses, handleGuess, guessedLetters }) => {
 	return (
 		<>
 			<form onSubmit={handleSubmit} guesses={guesses}>
-				<label>
-					Guess
-					<input
-						value={input}
-						type='text'
-						name='guess'
-						onChange={handleChange}
-						maxLength={1}
-					></input>
-				</label>
-				<button> submit </button>
+				<label>Guess</label>
+				<input
+					value={input}
+					type='text'
+					name='guess'
+					onChange={handleChange}
+					maxLength={1}
+				></input>
+				<Button variant='contained'> submit </Button>
 
 				{isValid && (
 					<div className='warning'>

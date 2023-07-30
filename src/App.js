@@ -6,8 +6,9 @@ import winGame from './sounds/winGame.mp3';
 import './App.css';
 import { Form } from './Form';
 import { GameOver } from './GameOver';
-import { ConfettiComp } from './confetti';
+import { ConfettiComp } from './Confetti';
 import { GameWin } from './GameWin';
+import { playAudio } from './CustomHooks';
 
 const App = () => {
 	const [displayedWord, setDisplayedWord] = useState([]);
@@ -43,19 +44,9 @@ const App = () => {
 		}
 
 		if (correctGuess) {
-			const audio = new Audio(correctAnswer);
-			audio.play();
-			audio.addEventListener('ended', () => {
-				audio.pause();
-				audio.currentTime = 0;
-			});
+			playAudio(correctAnswer);
 		} else {
-			const audio = new Audio(wrongAnswer);
-			audio.play();
-			audio.addEventListener('ended', () => {
-				audio.pause();
-				audio.currentTime = 0;
-			});
+			playAudio(wrongAnswer);
 			manageGuesses();
 		}
 		setDisplayedWord(newDisplayedWord);
@@ -91,17 +82,12 @@ const App = () => {
 
 			if (completedGuess) {
 				setTimeout(() => {
-					const audio = new Audio(winGame);
-					audio.play();
-					audio.addEventListener('ended', () => {
-						audio.pause();
-						audio.currentTime = 0;
-					});
+					playAudio(winGame);
 					setHasWon(true);
 					setTimeout(() => {
 						setIsGameWinActive(true);
 					}, 5000);
-				}, 2000);
+				}, 500);
 			}
 		};
 
