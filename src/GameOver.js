@@ -1,10 +1,10 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 
-export const GameOver = ({ currWord, resetGame, setRounds }) => {
+export const GameOver = ({ currWord, resetGame, setRounds, rounds }) => {
 	const handleClick = () => {
 		resetGame();
-		setRounds(0);
+		setRounds(rounds + 1);
 	};
 
 	return (

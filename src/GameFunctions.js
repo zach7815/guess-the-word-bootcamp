@@ -11,9 +11,8 @@ export const generateWordDisplay = (currentWord, displayFunction) => {
 	// create and display blank spaces for word
 	const wordDisplay = [];
 	for (let i = 0; i < currentWord.length; i++) {
-		wordDisplay.push('_');
+		wordDisplay.push(' ');
 	}
-
 	displayFunction(wordDisplay);
 };
 

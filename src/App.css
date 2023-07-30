@@ -52,11 +52,31 @@ form input {
 	height: inherit;
 	justify-content: center;
 	align-items: center;
-	font-size: 2rem;
+	font-size: 1.4rem;
 }
 .inner-content p span {
 	color: red;
 }
 .inner-content button {
 	width: fit-content;
+}
+
+.word-container {
+	display: flex;
+}
+
+.letter-container {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.letter-box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	border: 2px solid lightgreen;
+	font-size: 20px;
+	font-weight: bold;
 }

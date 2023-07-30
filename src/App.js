@@ -21,15 +21,15 @@ const App = () => {
 	const [displayedWord, setDisplayedWord] = useState([]);
 	const [currWord, setCurrWord] = useState(getRandomWord());
 	const [guessedLetters, setGuessedLetters] = useState([]);
-	const [guessesRemaining, setGuessesRemaining] = useState(10);
+	const [guessesRemaining, setGuessesRemaining] = useState(currWord.length + 3);
 	const [hasGuessed, setHasGuessed] = useState(false);
 	const [isGameOver, setIsGameOver] = useState(false);
 	const [hasWon, setHasWon] = useState(false);
 	const [isGameWinActive, setIsGameWinActive] = useState(false);
 	const [rounds, setRounds] = useState(0);
+	const [roundsWon, setRoundsWon] = useState(0);
 
 	const handleGuess = (userGuess) => {
-		console.log(currWord);
 		setGuessedLetters([...guessedLetters, userGuess]); // add the guessed letter to the list of guessed letters
 		let correctGuess = false;
 		const newDisplayedWord = [...displayedWord]; // make a copy of the displayed word array
@@ -50,7 +50,7 @@ const App = () => {
 	};
 
 	const resetGame = () => {
-		setGuessesRemaining(10);
+		setGuessesRemaining(currWord.length + 3);
 		setIsGameOver(false);
 		setGuessedLetters([]);
 		setCurrWord(getRandomWord());
@@ -59,7 +59,8 @@ const App = () => {
 
 	useEffect(() => {
 		generateWordDisplay(currWord, setDisplayedWord);
-	}, []);
+		console.log([...currWord]);
+	}, [currWord]);
 
 	useEffect(() => {
 		handleLoss(guessesRemaining, setIsGameOver, playAudio, loseGame);
@@ -73,11 +74,19 @@ const App = () => {
 		<div className='App'>
 			<header className='App-header'>
 				<h1>Guess The Word 🚀</h1>
-				<h3>Rounds Won: {rounds}</h3>
+				<h3>
+					Rounds Won: {roundsWon}/{rounds}
+				</h3>
 				<h3>Word Display</h3>
-				{displayedWord.join(',')}
+				<div class='word-container'>
+					{displayedWord.map((letter, index) => (
+						<div key={`${letter}${index}`} class='letter-container'>
+							<div class='letter-box'>{letter}</div>
+						</div>
+					))}
+				</div>
 				<h3>Guessed Letters</h3>
-				{guessedLetters.length > 0 ? guessedLetters.toString() : '-'}
+				{guessedLetters.length > 0 ? guessedLetters.join(' ') : '-'}
 
 				<div>{guessesRemaining}</div>
 
@@ -94,6 +103,7 @@ const App = () => {
 					currWord={currWord}
 					resetGame={resetGame}
 					setRounds={setRounds}
+					rounds={rounds}
 				/>
 			)}
 			{hasWon && <ConfettiComp />}
@@ -105,6 +115,9 @@ const App = () => {
 					setRounds={setRounds}
 					setHasWon={setHasWon}
 					setIsGameWinActive={setIsGameWinActive}
+					currWord={currWord}
+					roundsWon={roundsWon}
+					setRoundsWon={setRoundsWon}
 				/>
 			)}
 		</div>
