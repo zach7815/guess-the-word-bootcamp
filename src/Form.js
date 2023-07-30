@@ -50,20 +50,19 @@ export const Form = ({ guesses, handleGuess, guessedLetters }) => {
 					maxLength={1}
 				></input>
 				<Button variant='contained'> submit </Button>
-
-				{isValid && (
-					<div className='warning'>
-						{' '}
-						Numbers and special chars are invalid guess
-					</div>
-				)}
-				{isBlank && <p className='warning'>Submissions cannot be blank</p>}
-				{isRepeat && (
-					<p className='warning'>
-						Ooops! Looks like you already guessed that letter
-					</p>
-				)}
 			</form>
+			{isValid && (
+				<div className='warning'>
+					{' '}
+					Numbers and special chars are invalid guess
+				</div>
+			)}
+			{isBlank && <p className='warning'>Submissions cannot be blank</p>}
+			{isRepeat && (
+				<p className='warning'>
+					Ooops! Looks like you already guessed that letter
+				</p>
+			)}
 		</>
 	);
 };

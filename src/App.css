@@ -1,3 +1,15 @@
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+form input {
+	font-size: 18pt;
+	height: 42px;
+	width: 300px;
+}
+
 .App {
 	text-align: center;
 }
@@ -20,6 +32,7 @@
 .warning {
 	color: red;
 }
+
 .game-over {
 	position: absolute;
 	z-index: 900;
@@ -27,20 +40,9 @@
 	width: 100vw;
 	top: 0;
 	background-color: #1c1c1c;
-	opacity: 90%;
+	opacity: 95%;
 }
 
-form {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-}
-
-form input {
-	font-size: 18pt;
-	height: 42px;
-	width: 300px;
-}
 .inner-content {
 	display: flex;
 	flex-direction: column;
@@ -50,6 +52,10 @@ form input {
 	height: inherit;
 	justify-content: center;
 	align-items: center;
+	font-size: 2rem;
+}
+.inner-content p span {
+	color: red;
 }
 .inner-content button {
 	width: fit-content;

@@ -3,12 +3,19 @@ import { getRandomWord } from './utils';
 import correctAnswer from './sounds/correctAnswer.mp3';
 import wrongAnswer from './sounds/wrongAnswer.mp3';
 import winGame from './sounds/winGame.mp3';
+import loseGame from './sounds/loseGame.mp3';
 import './App.css';
 import { Form } from './Form';
 import { GameOver } from './GameOver';
 import { ConfettiComp } from './Confetti';
 import { GameWin } from './GameWin';
-import { playAudio } from './CustomHooks';
+import {
+	playAudio,
+	generateWordDisplay,
+	manageGuesses,
+	handleLoss,
+	handleWin,
+} from './GameFunctions';
 
 const App = () => {
 	const [displayedWord, setDisplayedWord] = useState([]);
@@ -20,16 +27,6 @@ const App = () => {
 	const [hasWon, setHasWon] = useState(false);
 	const [isGameWinActive, setIsGameWinActive] = useState(false);
 	const [rounds, setRounds] = useState(0);
-
-	const generateWordDisplay = () => {
-		// create and display blank spaces for word
-		const wordDisplay = [];
-		for (let i = 0; i < currWord.length; i++) {
-			wordDisplay.push('_');
-		}
-
-		setDisplayedWord(wordDisplay);
-	};
 
 	const handleGuess = (userGuess) => {
 		console.log(currWord);
@@ -47,7 +44,7 @@ const App = () => {
 			playAudio(correctAnswer);
 		} else {
 			playAudio(wrongAnswer);
-			manageGuesses();
+			manageGuesses(setHasGuessed, setGuessesRemaining);
 		}
 		setDisplayedWord(newDisplayedWord);
 	};
@@ -57,52 +54,26 @@ const App = () => {
 		setIsGameOver(false);
 		setGuessedLetters([]);
 		setCurrWord(getRandomWord());
-		generateWordDisplay();
+		generateWordDisplay(currWord, setDisplayedWord);
 	};
 
 	useEffect(() => {
-		generateWordDisplay();
+		generateWordDisplay(currWord, setDisplayedWord);
 	}, []);
 
 	useEffect(() => {
-		const handleLoss = () => {
-			if (guessesRemaining === 0) {
-				setIsGameOver(true);
-			}
-		};
-
-		handleLoss();
+		handleLoss(guessesRemaining, setIsGameOver, playAudio, loseGame);
 	}, [guessesRemaining, isGameOver]);
 
 	useEffect(() => {
-		const handleWin = () => {
-			const letterRegex = /^[a-z]+$/i;
-			const displayedWordString = displayedWord.join('');
-			const completedGuess = letterRegex.test(displayedWordString);
-
-			if (completedGuess) {
-				setTimeout(() => {
-					playAudio(winGame);
-					setHasWon(true);
-					setTimeout(() => {
-						setIsGameWinActive(true);
-					}, 5000);
-				}, 500);
-			}
-		};
-
-		handleWin();
+		handleWin(displayedWord, playAudio, winGame, setHasWon, setIsGameWinActive);
 	}, [displayedWord, hasGuessed]);
-
-	const manageGuesses = () => {
-		setHasGuessed(true);
-		setGuessesRemaining((prevGuesses) => prevGuesses - 1);
-	};
 
 	return (
 		<div className='App'>
 			<header className='App-header'>
 				<h1>Guess The Word 🚀</h1>
+				<h3>Rounds Won: {rounds}</h3>
 				<h3>Word Display</h3>
 				{displayedWord.join(',')}
 				<h3>Guessed Letters</h3>
@@ -118,7 +89,13 @@ const App = () => {
 					guessedLetters={guessedLetters}
 				/>
 			</header>
-			{isGameOver && <GameOver currWord={currWord} resetGame={resetGame} />}
+			{isGameOver && (
+				<GameOver
+					currWord={currWord}
+					resetGame={resetGame}
+					setRounds={setRounds}
+				/>
+			)}
 			{hasWon && <ConfettiComp />}
 			{isGameWinActive && (
 				<GameWin

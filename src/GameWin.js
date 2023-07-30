@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@mui/material/Button';
 
 export const GameWin = ({
 	guessesRemaining,
@@ -7,6 +8,7 @@ export const GameWin = ({
 	setRounds,
 	setIsGameWinActive,
 	setHasWon,
+	currWord,
 }) => {
 	const winReset = () => {
 		setRounds(rounds + 1);
@@ -23,7 +25,10 @@ export const GameWin = ({
 						You managed guess the word with only : {10 - guessesRemaining} wrong
 						guess
 					</p>
-					<button onClick={winReset}> Next Round </button>
+					<Button variant='contained' color='success' onClick={winReset}>
+						{' '}
+						Next Round{' '}
+					</Button>
 				</div>
 			</div>
 		</div>
